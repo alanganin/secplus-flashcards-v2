@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Security+ Flashcards — SY0-701 (Editable)</title>
+  <style>
+    :root{--bg:#0b0e11;--panel:#12161c;--muted:#7a8599;--text:#e7ecf3;--accent:#4ea1ff;--accent-2:#6ee7b7;--danger:#ff6b6b;--warn:#ffd166;--border:#223042;--card:#0f1318;--shadow:0 8px 24px rgba(0,0,0,.35)}
+    html,body{height:100%}body{margin:0;background:var(--bg);color:var(--text);font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+    .app{display:grid;grid-template-columns:320px 1fr;height:100%}@media(max-width:960px){.app{grid-template-columns:1fr;grid-template-rows:auto 1fr}}
+    header{position:sticky;top:0;z-index:1;background:var(--panel);border-bottom:1px solid var(--border);padding:10px 14px;display:flex;gap:8px;align-items:center}
+    header h1{font-size:18px;margin:0}.spacer{flex:1}
+    .toggle,.btn{cursor:pointer;border:1px solid var(--border);background:transparent;color:var(--text);padding:8px 10px;border-radius:10px}
+    .sidebar{border-right:1px solid var(--border);background:var(--panel);padding:14px;overflow:auto}
+    .field{display:flex;flex-direction:column;gap:6px;margin-bottom:12px}.field label{font-size:12px;color:var(--muted)}
+    input[type=search],select{background:#0d1218;color:var(--text);border:1px solid var(--border);padding:10px 12px;border-radius:10px;width:100%}
+    .filters{display:grid;grid-template-columns:1fr 1fr;gap:10px}@media(max-width:640px){.filters{grid-template-columns:1fr}}
+    .list{margin-top:10px}.item{padding:10px 12px;border:1px solid transparent;border-radius:10px;cursor:pointer}.item:hover{background:#0e141a;border-color:#1e293b}.item small{color:var(--muted)}
+    .empty{color:var(--muted);text-align:center;padding:10px}main{display:flex;flex-direction:column;height:100%}
+    .study{padding:16px;display:grid;grid-template-rows:auto 1fr auto;gap:12px;height:calc(100% - 48px)}
+    .stats{display:flex;gap:10px;flex-wrap:wrap}.stat{background:var(--panel);border:1px solid var(--border);padding:8px 10px;border-radius:10px;box-shadow:var(--shadow)}
+    .card{position:relative;background:var(--card);border:1px solid var(--border);border-radius:18px;padding:22px;box-shadow:var(--shadow);display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center}
+    .term{font-size:28px;font-weight:700;margin-bottom:8px}.definition{font-size:18px;max-width:900px;white-space:pre-line}.example{margin-top:8px;color:var(--muted);white-space:pre-line}
+    .actions{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}.btn.primary{background:var(--accent);color:#06141f;border-color:transparent}.btn.success{background:var(--accent-2);color:#062414;border-color:transparent}.btn.warn{background:var(--warn);color:#332100;border-color:transparent}.btn.danger{background:var(--danger);color:#2c0a0a;border-color:transparent}
+    .footer{display:flex;gap:10px;align-items:center;justify-content:space-between}.ring{--size:64px;width:var(--size);height:var(--size);background:conic-gradient(var(--accent) var(--deg,0deg),#20303f 0);border-radius:50%;display:grid;place-items:center;border:6px solid #0d141a}.ring span{font-weight:700}.badge{border:1px solid var(--border);padding:4px 8px;border-radius:10px;color:var(--muted)}.tips{color:var(--muted);font-size:12px}
+    .modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.5)}.modal[open]{display:flex}.dialog{background:var(--panel);border:1px solid var(--border);border-radius:14px;box-shadow:var(--shadow);width:min(720px,95vw);padding:16px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.grid-1{display:grid;grid-template-columns:1fr;gap:10px}textarea{min-height:120px;background:#0d1218;color:var(--text);border:1px solid var(--border);border-radius:10px;padding:10px}.dialog h2{margin:0 0 8px 0;font-size:18px}
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Security+ Flashcards — SY0-701 (Editable)</h1>
+    <div class="spacer"></div>
+    <button id="printBtn" class="toggle">🖨 Print</button>
+    <button id="exportDeckBtn" class="toggle">💾 Export Deck</button>
+    <label class="toggle" for="importDeckFile">📥 Import Deck</label>
+    <input id="importDeckFile" type="file" accept="application/json" style="display:none"/>
+    <button id="exportBtn" class="toggle">⬇️ Export Progress</button>
+    <label class="toggle" for="importFile">⬆️ Import Progress</label>
+    <input id="importFile" type="file" accept="application/json" style="display:none"/>
+    <button id="darkToggle" class="toggle">🌗 Theme</button>
+    <button id="addBtn" class="toggle">➕ Add</button>
+  </header>
+
+  <div class="app" role="application">
+    <aside class="sidebar" aria-label="Deck Browser">
+      <div class="field"><label for="search">Search (/, Enter = apply)</label><input id="search" type="search" placeholder="Search term, definition, example…"/></div>
+      <div class="filters">
+        <div class="field"><label for="category">Objective Title</label><select id="category"><option value="">All</option></select></div>
+        <div class="field"><label for="ob">Objective Code</label><select id="ob"><option value="">All</option></select></div>
+      </div>
+      <div class="actions" style="margin:8px 0;flex-wrap:nowrap;gap:6px">
+        <button id="filterAll" class="btn" aria-pressed="true">All</button>
+        <button id="filterUnseen" class="btn">Unseen</button>
+        <button id="filterDont" class="btn danger">Don’t know</button>
+        <button id="filterUnsure" class="btn warn">Unsure</button>
+        <button id="filterKnow" class="btn success">Know</button>
+      </div>
+      <div class="list" id="list" aria-live="polite"></div>
+      <div class="empty" id="emptyList" hidden>No results. Adjust filters.</div>
+      <div class="tips" style="margin-top:10px"><p><b>Shortcuts:</b> ←/→ prev/next, F flip, S know, D unsure, A don’t know, / search, E edit, N new.</p></div>
+    </aside>
+
+    <main>
+      <section class="study">
+        <div class="stats">
+          <div class="stat"><span id="countTotal">0</span> total</div>
+          <div class="stat"><span id="countSeen">0</span> studied</div>
+          <div class="stat"><span id="countKnow">0</span> ✅ know</div>
+          <div class="stat"><span id="countUnsure">0</span> ❓ unsure</div>
+          <div class="stat"><span id="countDont">0</span> ❌ don’t know</div>
+          <div class="stat ring" id="ring" title="Progress"><span id="ringPct">0%</span></div>
+          <div class="badge" id="currentInfo">—</div>
+        </div>
+
+        <article class="card" id="card" tabindex="0" aria-live="polite" aria-label="Flashcard">
+          <div class="term" id="term">Loading…</div>
+          <div class="definition" id="definition"></div>
+          <div class="example" id="example"></div>
+        </article>
+
+        <div class="footer">
+          <div class="actions">
+            <button id="prevBtn" class="btn" title="Previous (←)">← Prev</button>
+            <button id="flipBtn" class="btn" title="Flip (F)">↺ Flip</button>
+            <button id="nextBtn" class="btn" title="Next (→)">Next →</button>
+            <button id="shuffleBtn" class="btn" title="Shuffle current deck">🔀 Shuffle</button>
+            <button id="toggleExample" class="btn" aria-pressed="true" title="Show/Hide example">💡 Example</button>
+          </div>
+          <div class="actions">
+            <button id="btnDont" class="btn danger" title="Mark don’t know (A)">❌ Don’t know</button>
+            <button id="btnUnsure" class="btn warn" title="Mark unsure (D)">❓ Unsure</button>
+            <button id="btnKnow" class="btn success" title="Mark know (S)">✅ Know</button>
+            <button id="editBtn" class="btn" title="Edit (E)">✏️ Edit</button>
+            <button id="deleteBtn" class="btn danger" title="Delete">🗑 Delete</button>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div class="modal" id="editor" role="dialog" aria-modal="true" aria-labelledby="editorTitle">
+    <div class="dialog">
+      <h2 id="editorTitle">Edit Card</h2>
+      <div class="grid-1">
+        <div class="field"><label for="fTerm">Term</label><input id="fTerm" type="text" placeholder="Term"/></div>
+        <div class="field"><label for="fDefinition">Definition</label><textarea id="fDefinition" placeholder="Definition"></textarea></div>
+        <div class="field"><label for="fExample">Example / Scenario</label><textarea id="fExample" placeholder="Example (optional)"></textarea></div>
+        <div class="grid">
+          <div class="field"><label for="fCategory">Objective Title</label><input id="fCategory" type="text" placeholder="e.g., Compare and contrast concepts…"/></div>
+          <div class="field"><label for="fOB">Objective Code</label><input id="fOB" type="text" placeholder="e.g., 3.3"/></div>
+        </div>
+      </div>
+      <div class="actions" style="margin-top:12px;justify-content:flex-end">
+        <button id="cancelEdit" class="btn">Cancel</button>
+        <button id="saveEdit" class="btn primary">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
